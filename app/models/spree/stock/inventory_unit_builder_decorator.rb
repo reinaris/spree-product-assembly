@@ -5,7 +5,7 @@ module Spree
       def units
         @order.line_items.flat_map do |line_item|
           if line_item.product.assembly?
-            line_item.parts.each do |part|
+            line_item.parts.flat_map do |part|
               (line_item.quantity * line_item.count_of(part)).times.map do |i|
                 @order.inventory_units.build(
                   pending: true,

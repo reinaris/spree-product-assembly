@@ -23,6 +23,7 @@ module Spree
         let(:parts) { (1..3).map { create(:variant) } }
 
         before do
+          Spree::Products.all.update_all(can_be_part: true)
           order.products.last.parts << parts
         end
 

@@ -10,4 +10,5 @@ Spree::Variant.class_eval do
   def part?
     assemblies.exists?
   end
+
 end
