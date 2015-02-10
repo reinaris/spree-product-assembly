@@ -24,5 +24,20 @@ module Spree
         end
       end
     end
+
+    context "#can_supply?" do
+      include_context "product is ordered as individual and within a bundle"
+
+      before { bundle.parts.each { |v| bundle.set_part_count(v, 2) } }
+
+      it "should call itself for each part" do
+        bundle.parts.each do |part|
+          expect(part).to receive(:can_supply?).with(3 * 2).and_return(true)
+        end
+
+        bundle_variant.can_supply?(3)
+      end
+    end
+
   end
 end
