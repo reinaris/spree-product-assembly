@@ -1,18 +1,25 @@
-<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+<%= render :partial => 'spree/admin/shared/product_tabs', locals: { current: "Parts" } %>
 
-<%= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => "Parts"} %>
 <div id="product_parts">
   <%= render :partial => "parts_table", :locals => {:parts => @parts} %>
 </div>
 
 <%= form_tag('#') do %>
-  <label><%= Spree.t(:search) %>:</label>
-  <input id="searchtext" size="25">
-  <button id="search_parts_button" class="fa fa-search button" name="button">Search</button>
+  <div class="panel panel-default">
+    <div class="panel-heading"><%= Spree.t(:search) %></div>
+    <div class="panel-body">
+      <div class="input-group">
+        <input id="searchtext" class="form-control">
+        <span class="input-group-btn">
+          <button id="search_parts_button" class="btn btn-default" name="button"><%= Spree.t(:search) %></button>
+        </span>
+      </div>
+    </div>
+  </div>
 <% end %>
 
-<br/>
 <div id="search_hits"></div>
+
 <%= javascript_tag do %>
   /*!
    * Spree Product Assembly
@@ -22,15 +29,15 @@
 
   function search_for_parts(){
     $.ajax({
-     data: {q: $("#searchtext").val() }, 
+     data: {q: $("#searchtext").val() },
      dataType: 'html',
      success: function(request){
        jQuery('#search_hits').html(request);
        $('#search_hits').show();
-     }, 
-     type: 'POST', 
+     },
+     type: 'POST',
      url: '<%= available_admin_product_parts_url(@product) %>'
-    });    
+    });
   }
 
   $("#searchtext").keypress(function (e) {
@@ -53,7 +60,7 @@
       params = { count :  $("input", $(this).parent().parent()).val() };
       return make_post_request($(this), params);
     });
-    
+
     $("a.remove_admin_product_part_link").click(function(){
       return make_post_request($(this), {});
     });
