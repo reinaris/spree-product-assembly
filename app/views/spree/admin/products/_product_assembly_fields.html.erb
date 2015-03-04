@@ -1,13 +1,18 @@
-<div class="left six columns alpha">
-  <div class="field">
-    <%= f.label :can_be_part, Spree.t(:can_be_part)%>
-    <%= f.check_box(:can_be_part) %>
+<div class="form-group">
+  <div class="checkbox">
+    <%= label_tag :product_can_be_part do %>
+      <%= f.check_box(:can_be_part) %>
+      <%= Spree.t(:can_be_part) %>
+    <% end %>
   </div>
 </div>
-<div class="right six columns omega">
-  <div class="field">
-    <%= f.label :individual_sale, Spree.t(:individual_sale)%>
-    <%= f.check_box(:individual_sale) %>
+
+<div class="form-group">
+  <div class="checkbox">
+    <%= label_tag :product_individual_sale do %>
+      <%= f.check_box(:individual_sale) %>
+      <%= Spree.t(:individual_sale) %>
+    <% end %>
   </div>
 </div>
 
