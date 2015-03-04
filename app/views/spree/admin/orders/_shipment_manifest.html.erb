@@ -1,8 +1,11 @@
 <% shipment.manifest.each do |item| %>
   <tr class="stock-item" data-item-quantity="<%= item.quantity %>">
-    <td class="item-image"><%= mini_image(item.variant) %></td>
+    <td class="item-image image text-center">
+      <%= mini_image(item.variant) %>
+    </td>
     <td class="item-name">
-      <%= item.variant.product.name %><br><%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
+      <%= item.variant.product.name %><br/>
+      <%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
       <% if item.variant.part? && item.line_item %>
         <i><%= Spree.t(:part_of_bundle, sku: item.variant.product.sku) %></i>
       <% end %>
@@ -15,9 +18,9 @@
       <% end %>
     </td>
     <td class="item-qty-show align-center">
-        <% item.states.each do |state,count| %>
-          <%= count %> x <%= state.humanize.downcase %>
-        <% end %>
+      <% item.states.each do |state, count| %>
+        <%= count %> x <%= state.humanize.downcase %>
+      <% end %>
     </td>
     <% unless shipment.shipped? %>
       <td class="item-qty-edit is-hidden">
