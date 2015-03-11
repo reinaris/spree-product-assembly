@@ -22,7 +22,7 @@
         <%= count %> x <%= state.humanize.downcase %>
       <% end %>
     </td>
-    <% unless shipment.shipped? %>
+    <% if(!shipment.ready? && !shipment.shipped? && !item.variant.part? && can?(:update, item.line_item)) %>
       <td class="item-qty-edit is-hidden">
         <%= number_field_tag :quantity, item.quantity, min: 0, class: "line_item_quantity form-control", size: 5 %>
       </td>
@@ -35,7 +35,7 @@
       <% end %>
     </td>
     <td class="cart-item-delete actions" data-hook="cart_item_delete">
-      <% if(!shipment.shipped? && !item.variant.part? && can?(:update, item.line_item)) %>
+      <% if(!shipment.ready? && !shipment.shipped? && !item.variant.part? && can?(:update, item.line_item)) %>
         <%= link_to_with_icon 'arrow-left', Spree.t('actions.cancel'), "#", class: 'cancel-item btn btn-default btn-sm', data: { action: 'cancel' }, title: Spree.t('actions.cancel'), style: 'display: none', no_text: true %>
         <%= link_to_with_icon 'pencil', Spree.t('actions.edit'), "#", class: 'edit-item btn btn-default btn-sm', title: Spree.t('actions.edit'), no_text: true %>
         <%= link_to_with_icon 'ok', Spree.t('actions.save'), "#", class: 'save-item btn btn-success btn-sm', data: {'shipment-number' => shipment.number, 'variant-id' => item.variant.id, action: 'save'}, title: Spree.t('actions.save'), style: 'display: none', no_text: true %>
