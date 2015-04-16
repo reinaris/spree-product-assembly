@@ -4,6 +4,7 @@
     	<tr>
     	  <th><%= Spree.t(:sku) %></th>
     		<th><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:in_stock) %></th>
     		<th><%= Spree.t(:options) %></th>
     		<th><%= Spree.t(:qty) %></th>
     		<th></th>
@@ -13,7 +14,12 @@
       <% parts.each do |part| %>
         <tr id="<%= dom_id(part, :sel)%>">
           <td><%= part.sku %></td>
-          <td><%= part.product.name %></td>
+          <td>
+            <%= link_to part.product.try(:name), edit_admin_product_path(part.product) %>
+          </td>
+          <td>
+            <%= part.in_stock? %>
+          </td>
           <td><%= variant_options part %></td>
           <td><%= text_field_tag :count, @product.count_of(part), class: "form-control" %></td>
     	    <td class="actions">
