@@ -1,11 +1,14 @@
 <% shipment.manifest.each do |item| %>
   <tr class="stock-item" data-item-quantity="<%= item.quantity %>">
-    <td class="item-image image text-center">
+    <td class="item-image image text-center" width="48">
       <%= mini_image(item.variant) %>
     </td>
     <td class="item-name">
-      <%= item.variant.product.name %><br/>
-      <%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
+      <%= link_to item.variant.product.try(:name), edit_admin_product_path(item.variant.product) %><br/>
+      <% if !item.variant.option_values.empty? %>
+        <strong><%= variant_options(item.variant) %></strong><br/>
+      <% end %>
+      <%= item.variant.sku %> <br />
       <% if item.variant.part? && item.line_item %>
         <i><%= Spree.t(:part_of_bundle, sku: item.variant.product.sku) %></i>
       <% end %>
@@ -34,7 +37,7 @@
         <%= line_item_shipment_price(item.line_item, item.quantity) if item.line_item %>
       <% end %>
     </td>
-    <td class="cart-item-delete actions" data-hook="cart_item_delete">
+    <td class="cart-item-delete actions text-center" data-hook="cart_item_delete" width="130">
       <% if(!shipment.ready? && !shipment.shipped? && !item.variant.part? && can?(:update, item.line_item)) %>
         <%= link_to_with_icon 'arrow-left', Spree.t('actions.cancel'), "#", class: 'cancel-item btn btn-default btn-sm', data: { action: 'cancel' }, title: Spree.t('actions.cancel'), style: 'display: none', no_text: true %>
         <%= link_to_with_icon 'pencil', Spree.t('actions.edit'), "#", class: 'edit-item btn btn-default btn-sm', title: Spree.t('actions.edit'), no_text: true %>

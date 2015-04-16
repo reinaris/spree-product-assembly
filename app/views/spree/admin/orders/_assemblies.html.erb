@@ -6,23 +6,26 @@
         <%= Spree.t(:product_bundles) %>
       </h1>
     </div>
-    <table class="product-bundles table" data-hook="">
+    <table class="product-bundles table table-bordered" data-hook="">
       <thead>
         <th colspan="2"><%= Spree.t(:item_description) %></th>
-        <th><%= Spree.t(:price) %></th>
-        <th><%= Spree.t(:quantity) %></th>
-        <th><%= Spree.t(:total) %></th>
+        <th width="15%"><%= Spree.t(:price) %></th>
+        <th width="15%"><%= Spree.t(:quantity) %></th>
+        <th width="15%"><%= Spree.t(:total) %></th>
         <th class="orders-actions actions" data-hook="admin_order_form_line_items_header_actions"></th>
       </thead>
       <% order.line_items.assemblies.each do |item| %>
         <tbody>
           <tr class="" data-item-quantity="<%= item.quantity %>">
-            <td class="item-image"><%= mini_image(item.variant) %></td>
+            <td class="item-image" width="48"><%= mini_image(item.variant) %></td>
             <td class="item-name">
-              <%= item.product.name %> - <%= item.variant.sku %> <br />
-              <%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
+              <%= link_to item.product.try(:name), edit_admin_product_path(item.product) %><br/>
+              <% if !item.variant.option_values.empty? %>
+                <strong><%= variant_options(item.variant) %></strong><br />
+              <% end %>
+              <%= item.variant.sku %>
             </td>
-            <td class="item-price align-center">
+            <td class="item-price align-center" width="50">
               <%= item.single_money.to_html %>
             </td>
             <td class="line-item-qty-show align-center">
@@ -34,7 +37,7 @@
             <td class="item-total align-center">
               <%= item.display_amount.to_html %>
             </td>
-            <td class="cart-item-delete actions" data-hook="cart_item_delete">
+            <td class="cart-item-delete actions text-center" data-hook="cart_item_delete" width="130">
               <% unless item.any_units_shipped? %>
                 <% if can? :update, item %>
                   <%= link_to_with_icon 'arrow-left', Spree.t('actions.cancel'), "#", :class => 'cancel-line-item btn btn-default btn-sm', :data => {:action => 'cancel'}, :title => Spree.t('actions.cancel'), :style => 'display: none', :no_text => true %>
