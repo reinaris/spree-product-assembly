@@ -1,0 +1,5 @@
+<!-- insert_bottom 'td.line-item-name' -->
+
+<% if item.variant.part? && item.line_item %>
+  <br/><i><%= Spree.t(:part_of_bundle, sku: item.variant.product.sku) %></i>
+<% end %>

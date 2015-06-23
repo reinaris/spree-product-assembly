@@ -13,14 +13,7 @@
         <i><%= Spree.t(:part_of_bundle, sku: item.variant.product.sku) %></i>
       <% end %>
     </td>
-    <td class="item-price align-center">
-      <% if item.variant.part? %>
-        ---
-      <% else %>
-        <%= item.line_item.single_money.to_html if item.line_item %>
-      <% end %>
-    </td>
-    <td class="item-qty-show align-center">
+    <td class="item-qty-show text-center">
       <% item.states.each do |state, count| %>
         <%= count %> x <%= state.humanize.downcase %>
       <% end %>
@@ -30,13 +23,6 @@
         <%= number_field_tag :quantity, item.quantity, min: 0, class: "line_item_quantity form-control", size: 5 %>
       </td>
     <% end %>
-    <td class="item-total align-center">
-      <% if item.variant.part? %>
-        ---
-      <% else %>
-        <%= line_item_shipment_price(item.line_item, item.quantity) if item.line_item %>
-      <% end %>
-    </td>
     <td class="cart-item-delete actions text-center" data-hook="cart_item_delete" width="130">
       <% if(!shipment.ready? && !shipment.shipped? && !item.variant.part? && can?(:update, item.line_item)) %>
         <%= link_to_with_icon 'arrow-left', Spree.t('actions.cancel'), "#", class: 'cancel-item btn btn-default btn-sm', data: { action: 'cancel' }, title: Spree.t('actions.cancel'), style: 'display: none', no_text: true %>
