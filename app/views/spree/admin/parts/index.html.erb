@@ -1,24 +1,70 @@
+<% content_for :page_actions do %>
+  <%= button_link_to Spree.t(:add_parts), "javascript:;", class: "btn-success", data: { toggle: "modal", target: "#addPart" }, icon: 'add' %>
+<% end %>
+
 <%= render :partial => 'spree/admin/shared/product_tabs', locals: { current: "Parts" } %>
 
-<div id="product_parts">
-  <%= render :partial => "parts_table", :locals => {:parts => @parts} %>
+<div class="panel panel-default">
+  <div class="panel-heading"><%= Spree.t(:product_part_options) %></div>
+  <div class="panel-body">
+    <%= form_for [:admin, @product], method: :put, html: { multipart: true } do |f| %>
+      <div class="form-group">
+        <div class="checkbox" style="margin-top: 0;">
+          <%= label_tag :product_can_be_part do %>
+            <%= f.check_box(:can_be_part) %>
+            <%= Spree.t(:can_be_part) %>
+          <% end %>
+        </div>
+        <div class="checkbox">
+          <%= label_tag :product_individual_sale do %>
+            <%= f.check_box(:individual_sale) %>
+            <%= Spree.t(:individual_sale) %>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @product.assembly? %>
+        <% content_for :head do %>
+          <script type="text/javascript">
+            jQuery(document).ready(function(){
+              $("input#product_can_be_part").attr('disabled',true);
+            });
+          </script>
+        <% end %>
+      <% end %>
+
+      <%= render partial: 'spree/admin/shared/edit_resource_links', locals: { collection_url: spree.admin_products_path } %>
+    <% end %>
+  </div>
 </div>
 
-<%= form_tag('#') do %>
-  <div class="panel panel-default">
-    <div class="panel-heading"><%= Spree.t(:search) %></div>
-    <div class="panel-body">
-      <div class="input-group">
-        <input id="searchtext" class="form-control">
-        <span class="input-group-btn">
-          <button id="search_parts_button" class="btn btn-default" name="button"><%= Spree.t(:search) %></button>
-        </span>
+<h3><%= t(:product_parts) %></h3>
+
+<div id="product_parts">
+  <%= render partial: "parts_table", locals: { parts: @parts } %>
+</div>
+
+<div class="modal fade" id="addPart" tabindex="-1" role="dialog" aria-labelledby="addPartLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addPartLabel"><%= Spree.t(:search_part) %></h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag('#') do %>
+          <div class="input-group">
+            <input id="searchtext" class="form-control">
+            <span class="input-group-btn">
+              <button id="search_parts_button" class="btn btn-default" name="button"><%= Spree.t(:search) %></button>
+            </span>
+          </div>
+        <% end %>
+        <div id="search_hits"></div>
       </div>
     </div>
   </div>
-<% end %>
-
-<div id="search_hits"></div>
+</div>
 
 <%= javascript_tag do %>
   /*!
